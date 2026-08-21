@@ -559,6 +559,7 @@ body{width:100%;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'App
   .custom-select-chevron{flex-shrink:0}
 }
 @media (max-width:480px){
+  .field-row .field-input-icon{height:49px}
   .field-input-icon .shop-input-field{padding:14.5px 0;font-size:16px;line-height:18px}
   .field-input-icon .shop-input-field::placeholder{font-size:11.5px}
   .custom-select-display{font-size:16px;white-space:nowrap;padding:14.5px 0;line-height:18px;min-width:0;overflow:hidden;text-overflow:ellipsis}
@@ -895,11 +896,10 @@ const _utm = (function(){
   var parts = [p.get('utm_source'), p.get('utm_medium'), p.get('utm_campaign')].filter(Boolean);
   return parts.length ? parts.join(' / ') : '직접 접속';
 })();
+const S={tier:null,purposes:new Set(),ans:{},shopName:''};
 if(!new URLSearchParams(location.search).get('p')){
   logEvent('페이지 진입','','','');
 }
-
-const S={tier:null,purposes:new Set(),ans:{},shopName:''};
 let Q=[],qi=0,catGroups={},doneCats=new Set(),visitedCats=new Set(),currentCat=null,currentItems=[],gi=0,allTodos=[],recOpen=false;
 let curImgs=[],curImgIdx=0,lastSwipeAt=0;
 const Qs={

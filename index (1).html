@@ -491,6 +491,10 @@ body{width:100%;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'App
 .expired-sub{font-size:14px;color:#666;line-height:1.7;margin-bottom:1.3rem}
 .expired-btn{width:100%;max-width:300px;padding:14px;background:#7F77DD;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(127,119,221,0.35)}
 .site-footer{padding:16px 1.4rem 14px;text-align:center;flex-shrink:0}
+.bug-report-link{display:block;text-align:center;font-size:10px;color:#9a9aab;line-height:1.9;padding:16px 1.4rem 0;text-decoration:none;cursor:pointer;flex-shrink:0}
+.bug-report-link:hover{color:#7F77DD}
+.bug-report-link.bug-report-link-last{padding-bottom:16px}
+.bug-report-link+.site-footer{padding-top:6px}
 #sB .qbody{flex:0 1 auto;padding-bottom:0}
 .footer-links{font-size:10px;color:#9a9aab;line-height:1.9}
 .footer-links a{color:#8a86b0;text-decoration:none;border-bottom:1px solid #cfcbe4}
@@ -532,6 +536,8 @@ body{width:100%;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'App
   .intro-icon{width:28.98px;height:28.98px;font-size:13.11px;border-radius:8.97px}
   .intro-text{font-size:12.97296px}
   .footer-links{font-size:7px}
+  .bug-report-link+.site-footer{padding-top:4px}
+  .bug-report-link{font-size:7px}
   .footer-copy{font-size:6.65px}
   .btn-intro.error{font-size:11.968px}
   #sIntro .scr-top{padding-left:21.56544px;padding-right:21.56544px}
@@ -900,6 +906,43 @@ body{width:100%;font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'App
       <a class="cta-btn" href="https://alphareview.channel.io/workflows/831464" target="_blank" rel="noopener" onclick="logEvent('CTA 클릭','AI 빠른 질문','','')"><span class="cta-btn-title"><span style="margin-right:4px">🤖</span> AI에게 질문하기</span><span class="cta-btn-desc">24시간 상담 가능!</span></a>
       <a class="cta-btn cta-btn-guide" href="https://guide.alph.kr/" target="_blank" rel="noopener" onclick="logEvent('CTA 클릭','가이드 연결','','')"><span class="cta-btn-title">📖 알파리뷰의 더 많은 기능이 궁금하다면?</span><span class="cta-btn-desc">기능을 더 상세하게 확인할 수 있어요</span></a>
     </div>
+  </div>
+</div>
+<div class="step" id="sBug">
+  <div class="topbar"><div class="topbar-title">버그 및 오류 신고</div><div class="topbar-dots"><span class="tdot g"></span><span class="tdot y"></span><span class="tdot r"></span></div></div>
+  <div class="qbody" style="flex:1;display:flex;flex-direction:column">
+    <div class="q-title">🚨 버그 및 오류 신고</div>
+    <div style="margin-top:18px">
+      <label style="display:block;font-weight:700;font-size:14px;margin-bottom:8px;color:#1a1a1a">쇼핑몰 이름 <span style="font-weight:400;color:#c0392b">(필수)</span></label>
+      <input type="text" id="bugShopName" placeholder="쇼핑몰 이름을 입력해주세요" oninput="updateBugSubmitBtn()" style="width:100%;border:1.5px solid #EEEDFE;border-radius:11px;padding:12px 14px;font-family:inherit;font-size:14px;box-sizing:border-box;background:#fff">
+    </div>
+    <div style="margin-top:16px">
+      <label style="display:block;font-weight:700;font-size:14px;margin-bottom:8px;color:#1a1a1a">어떤 화면에서, 어떤 문제가 있었나요? <span style="font-weight:400;color:#c0392b">(필수)</span></label>
+      <textarea id="bugMessage" oninput="updateBugSubmitBtn()" placeholder="예: 기능 가이드 페이지에서 이미지가 슬라이드로 안 넘어가요" style="width:100%;min-height:120px;border:1.5px solid #EEEDFE;border-radius:11px;padding:12px 14px;font-family:inherit;font-size:14px;line-height:1.6;resize:vertical;box-sizing:border-box;background:#fff"></textarea>
+    </div>
+    <div style="margin-top:16px">
+      <label style="display:block;font-weight:700;font-size:14px;margin-bottom:8px;color:#1a1a1a">어떤 현상인지 캡쳐 이미지를 업로드 해주세요 <span style="font-weight:400;color:#8a869c">(선택)</span></label>
+      <input type="file" id="bugImageInput" accept="image/*" style="display:none" onchange="handleBugImageSelect(event)">
+      <button type="button" class="btn-s" style="width:100%" onclick="document.getElementById('bugImageInput').click()">📷 이미지 첨부하기</button>
+      <div id="bugImagePreviewWrap" style="display:none;margin-top:10px;position:relative">
+        <img id="bugImagePreview" style="width:100%;border-radius:11px;display:block;border:1.5px solid #EEEDFE" alt="첨부한 화면 캡처">
+        <button type="button" onclick="removeBugImage()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:13px;line-height:1">✕</button>
+      </div>
+    </div>
+    <div id="bugSubmitMsg" style="margin-top:10px;font-size:12.5px;color:#c0392b;display:none"></div>
+    <div class="qnav" style="margin-top:20px">
+      <button class="btn-s" onclick="closeBugReport()">취소</button>
+      <button class="btn-p" id="bugSubmitBtn" onclick="submitBugReport()">제출하기</button>
+    </div>
+  </div>
+</div>
+<div class="step" id="sBugDone">
+  <div class="topbar"><div class="topbar-title">버그 및 오류 신고</div><div class="topbar-dots"><span class="tdot g"></span><span class="tdot y"></span><span class="tdot r"></span></div></div>
+  <div class="qbody" style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;padding-top:15vh">
+    <div style="font-size:48px;margin-bottom:14px">🙏</div>
+    <div class="q-title" style="text-align:center">신고 접수가 완료 되었습니다.</div>
+    <div class="q-sub" style="text-align:center">처음부터 다시 시작해보시겠어요?</div>
+    <button class="btn-p on" style="margin-top:24px" onclick="restartFromBugDone()">처음으로</button>
   </div>
 </div>
 <div class="cat-confirm-modal" id="catConfirmModal" style="display:none">
@@ -2024,6 +2067,158 @@ function logEvent(eventType, detail, doneCount, totalCount){
   };
   fetch(GAS_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}}).catch(()=>{});
 }
+let bugReturnStepId='sIntro';
+let bugImageDataUri=null;
+function initBugReportLinks(){
+  document.querySelectorAll('.step').forEach(function(step){
+    if(step.id==='sBug'||step.id==='sBugDone'||step.id==='sIntro')return;
+    if(step.querySelector(':scope > .bug-report-link'))return;
+    const link=document.createElement('a');
+    link.href='#';
+    link.className='bug-report-link';
+    link.textContent='🚨 버그 및 오류 신고';
+    link.onclick=function(e){e.preventDefault();openBugReport();};
+    const footer=step.querySelector(':scope > .site-footer');
+    if(footer){
+      footer.insertAdjacentElement('beforebegin',link);
+    } else {
+      link.classList.add('bug-report-link-last');
+      const inner=step.querySelector(':scope > .done-inner');
+      if(inner){
+        inner.appendChild(link);
+      } else {
+        step.appendChild(link);
+      }
+    }
+  });
+}
+function openBugReport(){
+  const current=document.querySelector('.step.active');
+  bugReturnStepId=current?current.id:'sIntro';
+  document.getElementById('bugShopName').value=S.shopName||'';
+  document.getElementById('bugMessage').value='';
+  removeBugImage();
+  document.getElementById('bugSubmitMsg').style.display='none';
+  const btn=document.getElementById('bugSubmitBtn');
+  btn.disabled=false;btn.textContent='제출하기';
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sBug').classList.add('active');
+  updateBugSubmitBtn();
+  window.scrollTo(0,0);
+  scrollTopMobile();
+}
+function updateBugSubmitBtn(){
+  const shopName=document.getElementById('bugShopName').value.trim();
+  const message=document.getElementById('bugMessage').value.trim();
+  const btn=document.getElementById('bugSubmitBtn');
+  btn.classList.toggle('on',!!(shopName&&message));
+}
+function closeBugReport(){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(bugReturnStepId).classList.add('active');
+  window.scrollTo(0,0);
+  scrollTopMobile();
+}
+function handleBugImageSelect(e){
+  const file=e.target.files&&e.target.files[0];
+  if(!file)return;
+  if(file.size>10*1024*1024){
+    alert('이미지 용량은 10MB 이하로 첨부해주세요.');
+    e.target.value='';
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=new Image();
+    img.onload=function(){
+      const maxW=1200;
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      bugImageDataUri=canvas.toDataURL('image/jpeg',0.8);
+      document.getElementById('bugImagePreview').src=bugImageDataUri;
+      document.getElementById('bugImagePreviewWrap').style.display='block';
+    };
+    img.onerror=function(){
+      alert('이미지를 읽는 중 문제가 생겼어요. 다른 이미지로 시도해주세요.');
+      e.target.value='';
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function removeBugImage(){
+  bugImageDataUri=null;
+  const input=document.getElementById('bugImageInput');
+  if(input)input.value='';
+  const wrap=document.getElementById('bugImagePreviewWrap');
+  if(wrap)wrap.style.display='none';
+}
+function submitBugReport(){
+  const shopNameEl=document.getElementById('bugShopName');
+  const shopName=shopNameEl.value.trim();
+  const msgEl=document.getElementById('bugMessage');
+  const message=msgEl.value.trim();
+  const errEl=document.getElementById('bugSubmitMsg');
+  if(!shopName){
+    errEl.textContent='쇼핑몰 이름을 입력해주세요.';
+    errEl.style.display='block';
+    return;
+  }
+  if(!message){
+    errEl.textContent='어떤 화면에서, 어떤 문제가 있었는지 적어주세요.';
+    errEl.style.display='block';
+    return;
+  }
+  if(!GAS_URL){
+    errEl.textContent='제출 기능이 아직 연결되지 않았어요.';
+    errEl.style.display='block';
+    return;
+  }
+  errEl.style.display='none';
+  const btn=document.getElementById('bugSubmitBtn');
+  btn.disabled=true;
+  btn.textContent='제출 중...';
+  const payload={
+    type:'bugReport',
+    submittedAt:new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}),
+    shopName:shopName,
+    message:message,
+    imageBase64:bugImageDataUri||'',
+    utm:_utm
+  };
+  fetch(GAS_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}})
+    .then(function(){
+      btn.disabled=false;
+      btn.textContent='제출하기';
+      showBugDone();
+    })
+    .catch(function(){
+      btn.disabled=false;
+      btn.textContent='제출하기';
+      errEl.textContent='제출 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
+      errEl.style.display='block';
+    });
+}
+function showBugDone(){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sBugDone').classList.add('active');
+  window.scrollTo(0,0);
+  scrollTopMobile();
+}
+function restartFromBugDone(){
+  S.tier=null;S.purposes=new Set();S.ans={};S.shopName='';
+  try{sessionStorage.removeItem('apProgress');}catch(e){}
+  const shopInput=document.getElementById('shopNameInput');
+  if(shopInput)shopInput.value='';
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sIntro').classList.add('active');
+  window.scrollTo(0,0);
+  scrollTopMobile();
+}
 function downloadGuide(){
   const cats=Object.entries(catGroups);
   let txt='알파리뷰 설정 가이드\n차원이 다른 리뷰 솔루션\n\n'+'='.repeat(30)+'\n\n';
@@ -2132,6 +2327,7 @@ function scrollTopMobile(){
   setTimeout(()=>{window.scrollTo(0,0);},250);
 }
 try{
+  initBugReportLinks();
   loadFromLink();
   checkResumeOnLoad();
 } finally {
